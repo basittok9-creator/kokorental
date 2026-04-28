@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KokoRental – Sewa Peralatan Lumajang</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue-deep: #0a2463;
+  --blue-mid: #1565c0;
+  --blue-bright: #1e88e5;
+  --blue-light: #64b5f6;
+  --blue-pale: #e3f2fd;
+  --blue-xpale: #f0f8ff;
+  --white: #ffffff;
+  --gray-100: #f8fafc;
+  --gray-200: #e2e8f0;
+  --gray-500: #64748b;
+  --gray-700: #334155;
+  --wa-green: #25d366;
+  --wa-dark: #128c7e;
+  --shadow-soft: 0 4px 24px rgba(21,101,192,0.10);
+  --shadow-card: 0 8px 40px rgba(10,36,99,0.13);
+  --radius: 18px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--white);color:var(--gray-700);overflow-x:hidden;}
+
+/* ───── NAVBAR ───── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:999;
+  padding:0 20px;
+  background:rgba(10,36,99,0.92);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  transition:background .3s;
+}
+.nav-inner{
+  max-width:1100px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  height:58px;
+}
+.nav-logo{
+  font-family:'Playfair Display',serif;
+  font-size:1.4rem;color:#fff;letter-spacing:.5px;
+  flex-shrink:0;
+}
+.nav-logo span{color:var(--blue-light);}
+
+/* Category Tabs inside nav */
+.nav-cats{
+  display:flex;gap:4px;overflow-x:auto;
+  scrollbar-width:none;-ms-overflow-style:none;
+  padding:10px 0;
+  flex:1;margin:0 16px;
+}
+.nav-cats::-webkit-scrollbar{display:none;}
+.nav-cat{
+  flex-shrink:0;
+  color:rgba(255,255,255,.70);
+  text-decoration:none;
+  font-size:0.73rem;font-weight:600;
+  padding:5px 12px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.15);
+  transition:all .2s;
+  white-space:nowrap;
+}
+.nav-cat:hover,.nav-cat.active{
+  color:#fff;
+  background:rgba(255,255,255,.15);
+  border-color:rgba(255,255,255,.35);
+}
+.nav-wa{
+  flex-shrink:0;
+  background:linear-gradient(135deg,var(--wa-green),var(--wa-dark));
+  color:#fff;text-decoration:none;
+  font-size:.73rem;font-weight:700;
+  padding:7px 14px;border-radius:20px;
+  display:flex;align-items:center;gap:5px;
+  transition:opacity .2s;
+}
+.nav-wa:hover{opacity:.85;}
+
+/* ───── HERO ───── */
+.hero{
+  min-height:100vh;
+  background:
+    linear-gradient(160deg,rgba(10,36,99,.90) 0%,rgba(21,101,192,.78) 55%,rgba(30,136,229,.62) 100%),
+    url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1400&q=80') center/cover no-repeat;
+  display:flex;align-items:center;justify-content:center;
+  padding:100px 20px 60px;
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:'';position:absolute;bottom:-2px;left:0;right:0;
+  height:90px;
+  background:linear-gradient(to bottom,transparent,var(--white));
+}
+.hero-content{text-align:center;max-width:660px;animation:fadeUp .8s ease both;}
+.hero-badge{
+  display:inline-block;
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.30);
+  color:#fff;font-size:.75rem;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;
+  padding:6px 18px;border-radius:20px;margin-bottom:20px;
+  backdrop-filter:blur(6px);
+}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,8vw,3.8rem);
+  color:#fff;line-height:1.15;margin-bottom:16px;
+  text-shadow:0 2px 20px rgba(0,0,0,.20);
+}
+.hero h1 span{color:var(--blue-light);}
+.hero p{
+  color:rgba(255,255,255,.85);
+  font-size:clamp(.9rem,2.5vw,1.08rem);
+  line-height:1.7;margin-bottom:32px;
+}
+.hero-stats{
+  display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;
+}
+.stat{text-align:center;}
+.stat-num{font-family:'Playfair Display',serif;font-size:1.7rem;color:#fff;font-weight:800;}
+.stat-lab{font-size:.72rem;color:rgba(255,255,255,.65);letter-spacing:.5px;margin-top:2px;}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{
+  background:linear-gradient(135deg,var(--wa-green),var(--wa-dark));
+  color:#fff;border:none;padding:14px 28px;border-radius:50px;
+  font-size:.93rem;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;gap:8px;text-decoration:none;
+  box-shadow:0 6px 24px rgba(37,211,102,.35);
+  transition:transform .2s,box-shadow .2s;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(37,211,102,.45);}
+.btn-outline{
+  background:rgba(255,255,255,.12);color:#fff;
+  border:1.5px solid rgba(255,255,255,.50);
+  padding:14px 28px;border-radius:50px;
+  font-size:.93rem;font-weight:600;cursor:pointer;
+  text-decoration:none;backdrop-filter:blur(6px);transition:all .2s;
+}
+.btn-outline:hover{background:rgba(255,255,255,.22);}
+
+/* ───── SECTION COMMON ───── */
+section{padding:70px 20px;}
+.container{max-width:1050px;margin:0 auto;}
+.section-label{
+  font-size:.73rem;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--blue-bright);margin-bottom:8px;
+}
+.section-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.6rem,5vw,2.3rem);
+  color:var(--blue-deep);line-height:1.25;margin-bottom:12px;
+}
+.section-desc{color:var(--gray-500);font-size:.95rem;line-height:1.75;max-width:520px;}
+
+/* ───── CATEGORY FILTER BAR ───── */
+.cat-bar{
+  display:flex;gap:8px;flex-wrap:wrap;
+  margin-bottom:36px;
+}
+.cat-btn{
+  padding:8px 18px;border-radius:50px;
+  font-size:.80rem;font-weight:600;cursor:pointer;
+  border:1.5px solid var(--gray-200);
+  background:var(--white);color:var(--gray-500);
+  transition:all .2s;
+}
+.cat-btn:hover,.cat-btn.active{
+  background:var(--blue-deep);color:#fff;border-color:var(--blue-deep);
+}
+
+/* ───── PRODUCT GRID ───── */
+#produk{background:var(--gray-100);}
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:20px;
+}
+.prod-card{
+  background:var(--white);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:var(--shadow-soft);
+  border:1.5px solid var(--gray-200);
+  transition:transform .25s,box-shadow .25s;
+  display:flex;flex-direction:column;
+}
+.prod-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-card);}
+.prod-card.hidden{display:none;}
+.prod-img{
+  width:100%;height:180px;object-fit:cover;
+  display:block;transition:transform .3s;
+}
+.prod-card:hover .prod-img{transform:scale(1.04);}
+.prod-img-wrap{overflow:hidden;position:relative;}
+.prod-cat-tag{
+  position:absolute;top:10px;left:10px;
+  background:rgba(10,36,99,.82);
+  color:#fff;font-size:.68rem;font-weight:700;
+  padding:4px 10px;border-radius:20px;
+  letter-spacing:.5px;backdrop-filter:blur(6px);
+}
+.prod-body{padding:18px 18px 20px;flex:1;display:flex;flex-direction:column;}
+.prod-name{
+  font-family:'Playfair Display',serif;
+  font-size:1.08rem;color:var(--blue-deep);
+  font-weight:700;margin-bottom:6px;
+}
+.prod-desc{font-size:.82rem;color:var(--gray-500);line-height:1.6;margin-bottom:14px;flex:1;}
+.prod-prices{display:flex;flex-direction:column;gap:5px;margin-bottom:16px;}
+.price-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:7px 10px;background:var(--blue-xpale);
+  border-radius:var(--radius-xs);
+}
+.price-row-label{font-size:.76rem;color:var(--gray-500);font-weight:500;}
+.price-row-val{font-size:.88rem;color:var(--blue-deep);font-weight:700;}
+.prod-wa{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  background:linear-gradient(135deg,var(--wa-green),var(--wa-dark));
+  color:#fff;text-decoration:none;
+  padding:10px;border-radius:var(--radius-sm);
+  font-size:.83rem;font-weight:700;
+  transition:opacity .2s;
+}
+.prod-wa:hover{opacity:.85;}
+
+/* ───── PROFIL ───── */
+#profil{background:var(--white);}
+.profile-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:40px;align-items:center;margin-top:40px;
+}
+.profile-img-wrap{
+  position:relative;border-radius:var(--radius);overflow:hidden;
+  aspect-ratio:4/3;box-shadow:var(--shadow-card);
+}
+.profile-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.profile-img-wrap::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(21,101,192,.20),transparent 70%);
+}
+.profile-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--blue-pale);color:var(--blue-mid);
+  font-size:.78rem;font-weight:600;padding:6px 14px;
+  border-radius:20px;margin-bottom:18px;
+}
+.profile-features{margin-top:22px;display:flex;flex-direction:column;gap:10px;}
+.feature-item{
+  display:flex;align-items:flex-start;gap:12px;
+  background:var(--gray-100);border-radius:var(--radius-sm);
+  padding:12px 16px;border-left:3px solid var(--blue-bright);
+}
+.feature-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
+.feature-text{font-size:.86rem;line-height:1.5;color:var(--gray-700);}
+.feature-text strong{color:var(--blue-deep);}
+
+/* ───── HARGA RINGKASAN ───── */
+#harga{background:linear-gradient(180deg,var(--blue-pale) 0%,var(--white) 100%);}
+.price-table-wrap{
+  margin-top:36px;overflow-x:auto;
+  border-radius:var(--radius);box-shadow:var(--shadow-card);
+}
+.price-table{
+  width:100%;border-collapse:collapse;
+  background:var(--white);font-size:.88rem;
+}
+.price-table thead{background:linear-gradient(135deg,var(--blue-deep),var(--blue-mid));}
+.price-table thead th{
+  color:#fff;padding:14px 16px;text-align:left;
+  font-size:.78rem;letter-spacing:.5px;text-transform:uppercase;font-weight:700;
+}
+.price-table tbody tr{border-bottom:1px solid var(--gray-200);transition:background .15s;}
+.price-table tbody tr:hover{background:var(--blue-xpale);}
+.price-table tbody tr:last-child{border-bottom:none;}
+.price-table td{padding:13px 16px;vertical-align:middle;}
+.price-table td:first-child{font-weight:600;color:var(--blue-deep);}
+.price-table td .cat-chip{
+  display:inline-block;font-size:.68rem;font-weight:700;
+  padding:3px 9px;border-radius:10px;
+  background:var(--blue-pale);color:var(--blue-mid);
+  margin-left:6px;vertical-align:middle;
+}
+.price-tag{
+  display:inline-block;background:var(--blue-pale);
+  color:var(--blue-deep);font-weight:700;font-size:.82rem;
+  padding:4px 10px;border-radius:8px;margin:2px 2px 2px 0;
+}
+.price-table tfoot td{
+  padding:16px;text-align:center;
+  background:var(--gray-100);
+  border-top:2px solid var(--gray-200);
+}
+
+/* ───── KONTAK ───── */
+#kontak{background:linear-gradient(135deg,var(--blue-deep) 0%,var(--blue-mid) 100%);}
+#kontak .section-label{color:var(--blue-light);}
+#kontak .section-title{color:#fff;}
+#kontak .section-desc{color:rgba(255,255,255,.75);max-width:480px;}
+.wa-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:36px;}
+.wa-card{
+  background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.20);
+  border-radius:var(--radius);padding:24px 20px;text-align:center;
+  backdrop-filter:blur(10px);transition:background .2s,transform .2s;text-decoration:none;
+}
+.wa-card:hover{background:rgba(255,255,255,.18);transform:translateY(-4px);}
+.wa-card-icon{font-size:2.2rem;margin-bottom:10px;}
+.wa-card-name{color:#fff;font-weight:700;font-size:.97rem;margin-bottom:4px;}
+.wa-card-role{color:rgba(255,255,255,.65);font-size:.80rem;}
+.wa-card-num{color:var(--blue-light);font-size:.85rem;margin-top:8px;font-weight:600;}
+
+/* ───── QNA ───── */
+#qna{background:var(--gray-100);}
+.qna-list{margin-top:36px;display:flex;flex-direction:column;gap:12px;}
+.qna-item{
+  background:var(--white);border-radius:var(--radius-sm);
+  overflow:hidden;box-shadow:var(--shadow-soft);border:1px solid var(--gray-200);
+}
+.qna-q{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:17px 20px;cursor:pointer;font-weight:600;font-size:.91rem;
+  color:var(--blue-deep);gap:12px;transition:background .2s;user-select:none;
+}
+.qna-q:hover{background:var(--blue-pale);}
+.qna-arrow{
+  flex-shrink:0;width:27px;height:27px;border-radius:50%;
+  background:var(--blue-pale);color:var(--blue-mid);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;font-weight:700;transition:transform .3s,background .2s;
+}
+.qna-item.open .qna-arrow{transform:rotate(45deg);background:var(--blue-mid);color:#fff;}
+.qna-a{
+  max-height:0;overflow:hidden;
+  transition:max-height .4s ease,padding .3s;
+  padding:0 20px;font-size:.87rem;color:var(--gray-500);line-height:1.75;
+}
+.qna-item.open .qna-a{max-height:300px;padding:0 20px 18px;}
+
+/* ───── FOOTER ───── */
+footer{background:var(--blue-deep);padding:50px 20px 28px;color:rgba(255,255,255,.75);}
+.footer-inner{
+  max-width:1050px;margin:0 auto;
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:32px;margin-bottom:40px;
+}
+.footer-brand .nav-logo{font-size:1.5rem;display:block;margin-bottom:12px;}
+.footer-brand p{font-size:.83rem;line-height:1.75;max-width:230px;}
+.footer-col h4{color:#fff;font-size:.87rem;font-weight:700;margin-bottom:13px;letter-spacing:.5px;}
+.footer-col a{
+  display:block;color:rgba(255,255,255,.58);text-decoration:none;
+  font-size:.82rem;margin-bottom:8px;transition:color .2s;
+}
+.footer-col a:hover{color:var(--blue-light);}
+.footer-bottom{
+  max-width:1050px;margin:0 auto;
+  border-top:1px solid rgba(255,255,255,.10);padding-top:22px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:10px;font-size:.79rem;
+}
+
+/* ───── FLOATING WA ───── */
+.float-wa{
+  position:fixed;bottom:24px;right:20px;z-index:900;
+  background:linear-gradient(135deg,var(--wa-green),var(--wa-dark));
+  color:#fff;width:58px;height:58px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.7rem;box-shadow:0 6px 24px rgba(37,211,102,.45);
+  text-decoration:none;animation:pulse 2.5s infinite;transition:transform .2s;
+}
+.float-wa:hover{transform:scale(1.1);}
+
+/* ───── ANIMATIONS ───── */
+@keyframes pulse{
+  0%,100%{box-shadow:0 6px 24px rgba(37,211,102,.45);}
+  50%{box-shadow:0 6px 36px rgba(37,211,102,.70);}
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ───── RESPONSIVE ───── */
+@media(max-width:900px){
+  .footer-inner{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:768px){
+  .nav-cats{margin:0 8px;}
+  .nav-wa span{display:none;}
+  .profile-grid{grid-template-columns:1fr;}
+  .footer-inner{grid-template-columns:1fr 1fr;gap:20px;}
+  .footer-bottom{justify-content:center;text-align:center;}
+}
+@media(max-width:480px){
+  section{padding:52px 16px;}
+  .hero{padding:90px 16px 50px;}
+  .hero-stats{gap:16px;}
+  .wa-cards{grid-template-columns:1fr;}
+  .hero-btns{flex-direction:column;align-items:center;}
+  .btn-primary,.btn-outline{width:100%;justify-content:center;}
+  .footer-inner{grid-template-columns:1fr;}
+  .nav-wa{font-size:.68rem;padding:6px 10px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">Koko<span>Rental</span></span>
+    <div class="nav-cats">
+      <a href="#produk" class="nav-cat active" onclick="filterCat('semua',this)">Semua</a>
+      <a href="#produk" class="nav-cat" onclick="filterCat('komputer',this)">💻 Komputer</a>
+      <a href="#produk" class="nav-cat" onclick="filterCat('cetak',this)">🖨️ Cetak</a>
+      <a href="#produk" class="nav-cat" onclick="filterCat('acara',this)">🎤 Acara</a>
+      <a href="#produk" class="nav-cat" onclick="filterCat('komunikasi',this)">📡 Komunikasi</a>
+      <a href="#produk" class="nav-cat" onclick="filterCat('power',this)">⚡ Power</a>
+      <a href="#produk" class="nav-cat" onclick="filterCat('teknik',this)">🔧 Teknik</a>
+      <a href="#produk" class="nav-cat" onclick="filterCat('cctv',this)">📷 CCTV</a>
+    </div>
+    <a href="https://wa.me/6285185403486?text=Halo,%20saya%20mau%20tanya%20tentang%20sewa%20peralatan" target="_blank" rel="noopener noreferrer" class="nav-wa">
+      <span>💬</span><span>WhatsApp</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="beranda">
+  <div class="hero-content">
+    <div class="hero-badge">✦ Sewa Peralatan Lumajang &amp; Sekitarnya</div>
+    <h1>Satu Tempat,<br><span>Semua Peralatan</span></h1>
+    <p>Laptop, Printer, Proyektor, Sound System, Drone, Genset, CCTV &amp; lebih banyak lagi — sewa harian, mingguan, atau bulanan.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">13+</div><div class="stat-lab">Jenis Alat</div></div>
+      <div class="stat"><div class="stat-num">500+</div><div class="stat-lab">Pelanggan</div></div>
+      <div class="stat"><div class="stat-num">5⭐</div><div class="stat-lab">Rating</div></div>
+      <div class="stat"><div class="stat-num">24/7</div><div class="stat-lab">Support</div></div>
+    </div>
+    <div class="hero-btns">
+      <a href="https://wa.me/6285185403486?text=Halo,%20saya%20mau%20sewa%20peralatan" target="_blank" rel="noopener noreferrer" class="btn-primary">
+        💬 Pesan Sekarang
+      </a>
+      <a href="#produk" class="btn-outline">Lihat Semua Produk</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRODUK ═══ -->
+<section id="produk">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">✦ Katalog Sewa</div>
+      <h2 class="section-title">Pilih Peralatan<br>yang Anda Butuhkan</h2>
+      <p class="section-desc">Klik kategori untuk menyaring, atau telusuri semua produk di bawah ini.</p>
+    </div>
+
+    <div class="cat-bar reveal" style="margin-top:28px;">
+      <button class="cat-btn active" onclick="filterCat('semua',this)">🗂️ Semua</button>
+      <button class="cat-btn" onclick="filterCat('komputer',this)">💻 Komputer</button>
+      <button class="cat-btn" onclick="filterCat('cetak',this)">🖨️ Cetak</button>
+      <button class="cat-btn" onclick="filterCat('acara',this)">🎤 Acara</button>
+      <button class="cat-btn" onclick="filterCat('komunikasi',this)">📡 Komunikasi</button>
+      <button class="cat-btn" onclick="filterCat('power',this)">⚡ Power</button>
+      <button class="cat-btn" onclick="filterCat('teknik',this)">🔧 Teknik</button>
+      <button class="cat-btn" onclick="filterCat('cctv',this)">📷 CCTV</button>
+    </div>
+
+    <div class="products-grid reveal" id="productsGrid">
+
+      <!-- LAPTOP -->
+      <div class="prod-card" data-cat="komputer">
+        <div class="prod-img-wrap">
+          <img class="prod-img" src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&q=80" alt="Laptop">
+          <span class="prod-cat-tag">💻 Komputer</span>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">Laptop</div>
+          <div class="prod-desc">Laptop siap pakai untuk kerja, presentasi, atau belajar. Spesifikasi variatif tersedia.</div>
+          <div class="prod-prices">
+            <div class="price-row"><span class="price-row-label">Harian</span><span class="price-row-val">Rp 50–75K/hari</span></div>
+            <div class="price-row"><span class="price-row-label">Mingguan</span><span class="price-row-val">Rp 200K/minggu</span></div>
+            <div class="price-row"><span class="price-row-label">Bulanan</span><span class="price-row-val">Rp 300–500K/bln</span></div>
+          </div>
+          <a href="https://wa.me/6285185403486?text=Halo,%20saya%20mau%20sewa%20Laptop" target="_blank" rel="noopener noreferrer" class="prod-wa">💬 Tanya / Pesan</a>
+        </div>
+      </div>
+
+      <!-- PRINTER -->
+      <div class="prod-card" data-cat="cetak">
+        <div class="prod-img-wrap">
+          <img class="prod-img" src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=600&q=80" alt="Printer Epson">
+          <span class="prod-cat-tag">🖨️ Cetak</span>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">Printer Epson L3216</div>
+          <div class="prod-desc">Printer inkjet all-in-one, print–scan–copy. Cocok untuk kebutuhan cetak dokumen &amp; foto.</div>
+          <div class="prod-prices">
+            <div class="price-row"><span class="price-row-label">Harian</span><span class="price-row-val">Rp 200K/hari</span></div>
+          </div>
+          <a href="https://wa.me/6285185403486?text=Halo,%20saya%20mau%20sewa%20Printer%20Epson%20L3216" target="_blank" rel="noopener noreferrer" class="prod-wa">💬 Tanya / Pesan</a>
+        </div>
+      </div>
+
+      <!-- PROYEKTOR -->
+      <div class="prod-card" data-cat="acara">
+        <div class="prod-img-wrap">
+          <img class="prod-img" src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80" alt="Proyektor">
+          <span class="prod-cat-tag">🎤 Acara</span>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">Proyektor 3000 ANSI</div>
+          <div class="prod-desc">Proyektor 3000 ANSI lumens, terang dan jernih. Ideal untuk presentasi, seminar, dan acara outdoor.</div>
+          <div class="prod-prices">
+            <div class="price-row"><span class="price-row-label">Harian</span><span class="price-row-val">Rp 100K/hari</span></div>
+          </div>
+          <a href="https://wa.me/6285185403486?text=Halo,%20saya%20mau%20sewa%20Proyektor%203000%20ANSI" target="_blank" rel="noopener noreferrer" class="prod-wa">💬 Tanya / Pesan</a>
+        </div>
+      </div>
+
+      <!-- STAND PROYEKTOR -->
+      <div class="prod-card" data-cat="acara">
+        <div class="prod-img-wrap">
+          <img class="prod-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Stand Proyektor">
+          <span class="prod-cat-tag">🎤 Acara</span>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">Stand Proyektor</div>
+          <div class="prod-desc">Stand proyektor adjustable, kokoh dan mudah dipasang. Bisa dikombinasikan dengan sewa proyektor.</div>
+          <div class="prod-prices">
+            <div class="price-row"><span class="price-row-label">Harian</span><span class="price-row-val">Rp 75K/hari</span></div>
+          </div>
+          <a href="https://wa.me/6285185403486?text=Halo,%20saya%20mau%20sewa%20Stand%20Proyektor" target="_blank" rel="noopener noreferrer" class="prod-wa">💬 Tanya / Pesan</a>
+        </div>
+      </div>
+
+      <!-- SOUND SYSTEM -->
+      <div class="prod-card" data-cat="acara">
+        <div class="prod-img-wrap">
+          <img class="prod-img" src="https://images.unsplash.com/photo-1545486332-9e0999c535b2?w=600&q=80" alt="Sound System">
+          <span class="prod-cat-tag">🎤 Acara</span>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">Sound System</div>
+          <div class="prod-desc">Paket sound system komplit untuk acara indoor &amp; outdoor. Suara jernih dan powerful.</div>
+          <div class="prod-prices">
+            <div class="price-row"><span class="price-row-label">Harian</span><span class="price-row-val">Rp 150K/hari</span></div>
+          </div>
+          <a href="https://wa.me/6285185403486?text=Halo,%20saya%20mau%20sewa%20Sound%20System" target="_blank" rel="noopener noreferrer" class="prod-wa">💬 Tanya / Pesan</a>
+        </div>
+      </div>
+
+      <!-- HANDY TALKY -->
+      <div class="prod-card" data-cat="komunikasi">
+        <div class="prod-img-wrap">
+          <img class="prod-img" src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=80" alt="Handy Talky">
+          <span class="prod-cat-tag">📡 Komunikasi</span>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">Handy Talky (HT)</div>
+          <div class="prod-desc">Walkie-talkie untuk koordinasi acara, keamanan, atau lapangan. Bisa sewa banyak unit.</div>
+          <div class="prod-prices">
+            <div class="price-row"><span class="price-row-label">Harian</span><span class="price-row-val">Rp 10K/unit/hari</span></div>
+          </div>
+          <a href="https://wa.me/6285185403486?text=Halo,%20saya%20mau%20sewa%20Handy%20Talky" target="_blank" rel="noopener noreferrer" class="prod-wa">💬 Tanya / Pesan</a>
+        </div>
+      </div>
+
+      <!-- GENSET -->
+      <div class="prod-card" data-cat="power">
+        <div class="prod-img-wrap">
+          <img class="prod-img" src="https://images.unsplash.com/photo-1558618047-f4e60e2a4bb5?w=600&q=80" alt="Genset">
+          <span class="prod-cat-tag">⚡ Power</span>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">Genset 1000W</div>
+          <div class="prod-desc">Generator listrik 1000 watt, andal untuk acara outdoor, lokasi tanpa PLN, atau backup daya.</div>
+          <div class="prod-prices">
+            <div class="price-row"><span class="price-row-label">Harian</span><span class="price-row-val">Rp 100K/hari</span></div>
+          </div>
+          <a href="https://wa.me/6285185403486?text=Halo,%20saya%20mau%20sewa%20Genset%201000W" target="_blank" rel="noopener noreferrer" class="prod-wa">💬 Tanya / Pesan</a>
+        </div>
+      </div>
+
+      <!-- DRONE -->
+      <div class="prod-card" data-cat="acara">
+        <div class="prod-img-wrap">
+          <img class="prod-img" src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=600&q=80" alt="Drone Avata 2">
+          <span class="prod-cat-tag">🎤 Acara</span>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">Drone DJI Avata 2</div>
+          <div class="prod-desc">Drone FPV sinematik untuk dokumentasi acara, konten kreatif, dan aerial videografi profesional.</div>
+          <div class="prod-prices">
+            <div class="price-row"><span class="price-row-label">Harian</span><span class="price-row-val">Rp 300K/hari</span></div>
+          </div>
+          <a href="https://wa.me/6285185403486?text=Halo,%20saya%20mau%20sewa%20Drone%20DJI%20Avata%202" target="_blank" rel="noopener noreferrer" class="prod-wa">💬 Tanya / Pesan</a>
+        </div>
+      </div>
+
+      <!-- MINI OTDR -->
+      <div class="prod-card" data-cat="teknik">
+        <div class="prod-img-wrap">
+          <img class="prod-img" src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=600&q=80" alt="Mini OTDR">
+          <span class="prod-cat-tag">🔧 Teknik</span>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">Mini OTDR</div>
+          <div class="prod-desc">Alat ukur serat optik (Optical Time Domain Reflectometer) untuk instalasi dan troubleshoot jaringan fiber.</div>
+          <div class="prod-prices">
+            <div class="price-row"><span class="price-row-label">Per Jam</span><span class="price-row-val">Rp 10K/jam</span></div>
+          </div>
+          <a href="https://wa.me/6285185403486?text=Halo,%20saya%20mau%20sewa%20Mini%20OTDR" target="_blank" rel="noopener noreferrer" class="prod-wa">💬 Tanya / Pesan</a>
+        </div>
+      </div>
+
+      <!-- SPLICER -->
+      <div class="prod-card" data-cat="teknik">
+        <div class="prod-img-wrap">
+          <img class="prod-img" src="https://images.unsplash.com/photo-1504707748692-419802cf939d?w=600&q=80" alt="Splicer Fiber">
+          <span class="prod-cat-tag">🔧 Teknik</span>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">Splicer Fiber Optik</div>
+          <div class="prod-desc">Mesin fusion splicer untuk penyambungan kabel fiber optik. Presisi tinggi, hasil las bersih.</div>
+          <div class="prod-prices">
+            <div class="price-row"><span class="price-row-label">Per Jam</span><span class="price-row-val">Rp 20K/jam</span></div>
+          </div>
+          <a href="https://wa.me/6285185403486?text=Halo,%20saya%20mau%20sewa%20Splicer%20Fiber%20Optik" target="_blank" rel="noopener noreferrer" class="prod-wa">💬 Tanya / Pesan</a>
+        </div>
+      </div>
+
+      <!-- LAS LISTRIK -->
+      <div class="prod-card" data-cat="teknik">
+        <div class="prod-img-wrap">
+          <img class="prod-img" src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&q=80" alt="Las Listrik">
+          <span class="prod-cat-tag">🔧 Teknik</span>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">Las Listrik</div>
+          <div class="prod-desc">Mesin las listrik untuk pekerjaan konstruksi, fabrikasi, dan perbaikan logam di lapangan.</div>
+          <div class="prod-prices">
+            <div class="price-row"><span class="price-row-label">Harian</span><span class="price-row-val">Rp 100K/hari</span></div>
+          </div>
+          <a href="https://wa.me/6285185403486?text=Halo,%20saya%20mau%20sewa%20Las%20Listrik" target="_blank" rel="noopener noreferrer" class="prod-wa">💬 Tanya / Pesan</a>
+        </div>
+      </div>
+
+      <!-- CCTV -->
+      <div class="prod-card" data-cat="cctv">
+        <div class="prod-img-wrap">
+          <img class="prod-img" src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=600&q=80" alt="CCTV Jaify">
+          <span class="prod-cat-tag">📷 CCTV</span>
+        </div>
+        <div class="prod-body">
+          <div class="prod-name">CCTV Jaify Full HD</div>
+          <div class="prod-desc">CCTV 1080p dengan night vision 20m. Termasuk pasang, bongkar, dan garansi teknis selama masa sewa.</div>
+          <div class="prod-prices">
+            <div class="price-row"><span class="price-row-label">Bulanan</span><span class="price-row-val">Rp 60K/unit/bln</span></div>
+          </div>
+          <a href="https://wa.me/6285185403486?text=Halo,%20saya%20mau%20sewa%20CCTV" target="_blank" rel="noopener noreferrer" class="prod-wa">💬 Tanya / Pesan</a>
+        </div>
+      </div>
+
+    </div><!-- /products-grid -->
+  </div>
+</section>
+
+<!-- ═══ DAFTAR HARGA ═══ -->
+<section id="harga">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <div class="section-label">✦ Daftar Harga</div>
+      <h2 class="section-title">Harga Transparan,<br>Tanpa Biaya Tersembunyi</h2>
+      <p class="section-desc" style="margin:0 auto;">Semua harga sudah termasuk pengantaran area Lumajang untuk paket tertentu.</p>
+    </div>
+    <div class="price-table-wrap reveal">
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th>Peralatan</th>
+            <th>Kategori</th>
+            <th>Harga Sewa</th>
+            <th>Satuan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Laptop</td><td>💻 Komputer</td><td><span class="price-tag">Rp 50–75K</span><span class="price-tag">Rp 200K</span><span class="price-tag">Rp 300–500K</span></td><td>Harian / Mingguan / Bulanan</td></tr>
+          <tr><td>Printer Epson L3216</td><td>🖨️ Cetak</td><td><span class="price-tag">Rp 200K</span></td><td>Per hari</td></tr>
+          <tr><td>Proyektor 3000 ANSI</td><td>🎤 Acara</td><td><span class="price-tag">Rp 100K</span></td><td>Per hari</td></tr>
+          <tr><td>Stand Proyektor</td><td>🎤 Acara</td><td><span class="price-tag">Rp 75K</span></td><td>Per hari</td></tr>
+          <tr><td>Sound System</td><td>🎤 Acara</td><td><span class="price-tag">Rp 150K</span></td><td>Per hari</td></tr>
+          <tr><td>Handy Talky (HT)</td><td>📡 Komunikasi</td><td><span class="price-tag">Rp 10K</span></td><td>Per unit / hari</td></tr>
+          <tr><td>Genset 1000W</td><td>⚡ Power</td><td><span class="price-tag">Rp 100K</span></td><td>Per hari</td></tr>
+          <tr><td>Drone DJI Avata 2</td><td>🎤 Acara</td><td><span class="price-tag">Rp 300K</span></td><td>Per hari</td></tr>
+          <tr><td>Mini OTDR</td><td>🔧 Teknik</td><td><span class="price-tag">Rp 10K</span></td><td>Per jam</td></tr>
+          <tr><td>Splicer Fiber Optik</td><td>🔧 Teknik</td><td><span class="price-tag">Rp 20K</span></td><td>Per jam</td></tr>
+          <tr><td>Las Listrik</td><td>🔧 Teknik</td><td><span class="price-tag">Rp 100K</span></td><td>Per hari</td></tr>
+          <tr><td>CCTV Jaify Full HD</td><td>📷 CCTV</td><td><span class="price-tag">Rp 60K</span></td><td>Per unit / bulan</td></tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4">
+              Harga dapat berubah sewaktu-waktu. Hubungi kami untuk <strong>penawaran paket bundling</strong> atau kebutuhan khusus.
+              &nbsp;
+              <a href="https://wa.me/6285185403486?text=Halo,%20saya%20mau%20tanya%20harga%20sewa" target="_blank" rel="noopener noreferrer" style="color:var(--blue-bright);font-weight:700;">💬 Chat WhatsApp</a>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROFIL ═══ -->
+<section id="profil">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">✦ Tentang Kami</div>
+      <h2 class="section-title">Mengapa Memilih<br>KokoRental?</h2>
+      <p class="section-desc">Kami hadir sebagai solusi sewa peralatan terlengkap di Lumajang dengan pelayanan cepat dan harga transparan.</p>
+    </div>
+    <div class="profile-grid reveal">
+      <div class="profile-img-wrap">
+        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80" alt="KokoRental">
+      </div>
+      <div>
+        <div class="profile-badge">🏆 Terpercaya Sejak 2020</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--blue-deep);margin-bottom:10px;">Solusi Sewa Terlengkap<br>di Lumajang</h3>
+        <p style="font-size:.87rem;color:var(--gray-500);line-height:1.75;">Dengan pengalaman lebih dari 5 tahun, KokoRental telah melayani ratusan pelanggan dari berbagai kalangan — pelajar, profesional, EO acara, hingga teknisi lapangan. Semua kebutuhan peralatan ada di satu tempat.</p>
+        <div class="profile-features">
+          <div class="feature-item">
+            <span class="feature-icon">🚚</span>
+            <div class="feature-text"><strong>Antar-Jemput Gratis</strong><br>Gratis pengiriman area Lumajang kota</div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">🛡️</span>
+            <div class="feature-text"><strong>Garansi Alat</strong><br>Kerusakan teknis bukan kelalaian penyewa kami tanggung</div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">📞</span>
+            <div class="feature-text"><strong>Support 24 Jam</strong><br>Siap bantu via WhatsApp kapan saja</div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">⚡</span>
+            <div class="feature-text"><strong>Proses Cepat</strong><br>Konfirmasi dalam 1 jam, alat siap hari yang sama</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ KONTAK WA ═══ -->
+<section id="kontak">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">✦ Hubungi Kami</div>
+      <h2 class="section-title">Siap Membantu Anda<br>Kapan Saja 🤝</h2>
+      <p class="section-desc">Pilih admin yang tersedia untuk pemesanan, pertanyaan, atau konsultasi kebutuhan alat Anda.</p>
+    </div>
+    <div class="wa-cards reveal">
+      <a href="https://wa.me/6285185403486?text=Halo,%20Admin%20saya%20mau%20tanya%20tentang%20sewa%20peralatan" target="_blank" rel="noopener noreferrer" class="wa-card">
+        <div class="wa-card-icon">👩‍💼</div>
+        <div class="wa-card-name">Admin Utama</div>
+        <div class="wa-card-role">Customer Service • 08.00–21.00</div>
+        <div class="wa-card-num">+62 851-8540-3486</div>
+      </a>
+      <a href="https://wa.me/6281253532486?text=Halo,%20saya%20mau%20tanya%20tentang%20sewa%20peralatan" target="_blank" rel="noopener noreferrer" class="wa-card">
+        <div class="wa-card-icon">👨‍💼</div>
+        <div class="wa-card-name">Admin 2</div>
+        <div class="wa-card-role">Pemesanan &amp; Pengiriman</div>
+        <div class="wa-card-num">+62 812-5253-2486</div>
+      </a>
+      <a href="https://wa.me/6282331839352?text=Halo,%20saya%20mau%20tanya%20tentang%20kemitraan" target="_blank" rel="noopener noreferrer" class="wa-card">
+        <div class="wa-card-icon">🤝</div>
+        <div class="wa-card-name">Admin Mitra</div>
+        <div class="wa-card-role">Kemitraan &amp; Event Organizer</div>
+        <div class="wa-card-num">+62 823-3183-9352</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Q&A ═══ -->
+<section id="qna">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <div class="section-label">✦ Pertanyaan Umum</div>
+      <h2 class="section-title">Sering Ditanyakan</h2>
+      <p class="section-desc" style="margin:0 auto;">Jawaban atas pertanyaan yang paling sering kami terima.</p>
+    </div>
+    <div class="qna-list reveal">
+      <div class="qna-item">
+        <div class="qna-q" onclick="toggleQna(this)">Apakah tersedia antar-jemput ke lokasi? <span class="qna-arrow">+</span></div>
+        <div class="qna-a">Ya! Untuk area Lumajang kota, antar-jemput GRATIS. Untuk luar kota, dikenakan biaya transportasi sesuai jarak. Hubungi kami untuk info lebih lanjut.</div>
+      </div>
+      <div class="qna-item">
+        <div class="qna-q" onclick="toggleQna(this)">Bagaimana sistem pembayarannya? <span class="qna-arrow">+</span></div>
+        <div class="qna-a">Kami menerima transfer bank (BCA, BRI), dompet digital (DANA), dan COD (bayar di tempat) untuk area Lumajang. Pembayaran dilakukan di awal masa sewa.</div>
+      </div>
+      <div class="qna-item">
+        <div class="qna-q" onclick="toggleQna(this)">Apakah ada deposit/jaminan? <span class="qna-arrow">+</span></div>
+        <div class="qna-a">Untuk beberapa alat bernilai tinggi seperti Drone, Laptop, dan Proyektor, kami mewajibkan deposit yang akan dikembalikan penuh saat alat dikembalikan dalam kondisi baik.</div>
+      </div>
+      <div class="qna-item">
+        <div class="qna-q" onclick="toggleQna(this)">Bagaimana jika alat rusak saat disewa? <span class="qna-arrow">+</span></div>
+        <div class="qna-a">Kerusakan teknis bukan akibat kelalaian penyewa sepenuhnya ditanggung KokoRental. Kerusakan akibat kelalaian penyewa akan dikenakan biaya perbaikan sesuai kerusakan.</div>
+      </div>
+      <div class="qna-item">
+        <div class="qna-q" onclick="toggleQna(this)">Berapa minimum durasi sewa? <span class="qna-arrow">+</span></div>
+        <div class="qna-a">Minimum sewa berbeda per alat. Laptop &amp; peralatan umum: 1 hari. Mini OTDR &amp; Splicer: 1 jam. CCTV: 1 bulan. Hubungi kami untuk kebutuhan durasi khusus.</div>
+      </div>
+      <div class="qna-item">
+        <div class="qna-q" onclick="toggleQna(this)">Apakah bisa sewa banyak alat sekaligus? <span class="qna-arrow">+</span></div>
+        <div class="qna-a">Tentu! Kami bahkan menawarkan diskon paket bundling untuk penyewaan beberapa alat sekaligus — misalnya paket acara (proyektor + stand + sound system + genset). Hubungi kami untuk penawaran khusus.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="nav-logo">Koko<span style="color:var(--blue-light)">Rental</span></span>
+      <p>Solusi sewa peralatan terlengkap di Lumajang. Laptop, printer, proyektor, drone, CCTV, dan lebih banyak lagi.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigasi</h4>
+      <a href="#beranda">Beranda</a>
+      <a href="#produk">Katalog Produk</a>
+      <a href="#harga">Daftar Harga</a>
+      <a href="#profil">Tentang Kami</a>
+      <a href="#qna">Q&amp;A</a>
+    </div>
+    <div class="footer-col">
+      <h4>Kategori</h4>
+      <a href="#produk" onclick="filterCat('komputer')">💻 Komputer</a>
+      <a href="#produk" onclick="filterCat('acara')">🎤 Acara</a>
+      <a href="#produk" onclick="filterCat('teknik')">🔧 Teknik</a>
+      <a href="#produk" onclick="filterCat('cctv')">📷 CCTV</a>
+      <a href="#produk" onclick="filterCat('power')">⚡ Power</a>
+    </div>
+    <div class="footer-col">
+      <h4>Kontak</h4>
+      <a href="https://wa.me/6285185403486" target="_blank" rel="noopener noreferrer">WhatsApp Utama</a>
+      <a href="mailto:kokkorentalsewa@gmail.com">kokkorentalsewa@gmail.com</a>
+      <a href="#" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="#" target="_blank" rel="noopener noreferrer">Shopee</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&#169; 2025 KokoRental. Hak cipta dilindungi.</span>
+    <span>Made with &#10084;&#65039; in Lumajang</span>
+  </div>
+</footer>
+
+<!-- FLOATING WA -->
+<a href="https://wa.me/6285185403486?text=Halo,%20saya%20mau%20tanya%20tentang%20sewa%20peralatan" target="_blank" rel="noopener noreferrer" class="float-wa" title="Chat WhatsApp">💬</a>
+
+<script>
+// ── Filter Category ──
+function filterCat(cat, el) {
+  // update card visibility
+  var cards = document.querySelectorAll('.prod-card');
+  cards.forEach(function(c) {
+    if (cat === 'semua' || c.getAttribute('data-cat') === cat) {
+      c.classList.remove('hidden');
+    } else {
+      c.classList.add('hidden');
+    }
+  });
+
+  // update .cat-btn active
+  var btns = document.querySelectorAll('.cat-btn');
+  btns.forEach(function(b) { b.classList.remove('active'); });
+  if (el && el.classList && el.classList.contains('cat-btn')) {
+    el.classList.add('active');
+  } else {
+    // called from nav or footer link — find matching btn
+    btns.forEach(function(b) {
+      if (b.getAttribute('onclick') && b.getAttribute('onclick').indexOf("'"+cat+"'") !== -1) {
+        b.classList.add('active');
+      }
+    });
+  }
+
+  // update nav-cat active
+  var navCats = document.querySelectorAll('.nav-cat');
+  navCats.forEach(function(n) {
+    n.classList.remove('active');
+    if (n.getAttribute('onclick') && n.getAttribute('onclick').indexOf("'"+cat+"'") !== -1) {
+      n.classList.add('active');
+    }
+  });
+}
+
+// ── Q&A Toggle ──
+function toggleQna(el) {
+  var item = el.parentElement;
+  var isOpen = item.classList.contains('open');
+  document.querySelectorAll('.qna-item.open').forEach(function(i) { i.classList.remove('open'); });
+  if (!isOpen) item.classList.add('open');
+}
+
+// ── Scroll Reveal ──
+var reveals = document.querySelectorAll('.reveal');
+var obs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e, i) {
+    if (e.isIntersecting) {
+      setTimeout(function() { e.target.classList.add('visible'); }, i * 90);
+    }
+  });
+}, { threshold: 0.10 });
+reveals.forEach(function(r) { obs.observe(r); });
+</script>
+</body>
+</html>
